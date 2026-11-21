@@ -44,6 +44,10 @@ button{font:inherit;color:inherit}
 .btn-line{background:#fff;border:2px solid var(--line);color:var(--ink)}
 .btn-tline{background:#fff;border:2px solid var(--teal);color:var(--teal-ink)}
 .btn-ghost{background:transparent;color:var(--ink-2);min-height:52px}
+/* 소셜 로그인 버튼: 각 회사 로그인 버튼 규정 색 */
+.btn-kakao{background:#FEE500;color:rgba(0,0,0,.85)}
+.btn-naver{background:#03C75A;color:#fff}
+.btn-google{background:#fff;border:2px solid #DADCE0;color:var(--ink)}
 .btn-red{background:var(--red);color:#fff;box-shadow:0 6px 14px rgba(229,72,77,.25)}
 .btn-main{min-height:70px;border-radius:20px;justify-content:flex-start;padding:0 20px 0 22px;font-size:23px;gap:14px}
 .btn-main .chev{margin-left:auto}

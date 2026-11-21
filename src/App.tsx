@@ -7,6 +7,7 @@ import HelpPage from './pages/HelpPage'
 import HomePage from './pages/HomePage'
 import HospitalDetailPage from './pages/HospitalDetailPage'
 import HospitalListPage from './pages/HospitalListPage'
+import LoginCallbackPage from './pages/LoginCallbackPage'
 import LoginPage from './pages/LoginPage'
 import MyPage from './pages/MyPage'
 import SymptomPage from './pages/SymptomPage'
@@ -33,6 +34,7 @@ export default function App() {
       <Route path="emergency" element={<EmergencyPage />} /> {/* 11, 12 */}
       <Route path="my" element={<MyPage />} /> {/* 13, 15 */}
       <Route path="login" element={<LoginPage />} /> {/* 14 */}
+      <Route path="login/callback" element={<LoginCallbackPage />} />
       <Route path="document" element={<DocumentPage />} /> {/* 16 */}
       <Route path="help" element={<HelpPage />} /> {/* 17 */}
       <Route path="*" element={<HomePage />} />
