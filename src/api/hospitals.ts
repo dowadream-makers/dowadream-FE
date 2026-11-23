@@ -1,44 +1,36 @@
 import { useQuery } from '@tanstack/react-query'
+import type { Coords } from '../lib/location'
 import { getJson } from './client'
-
-// 백엔드 HospitalResponse 와 같은 모양
-export type CrowdLevel = 'RELAXED' | 'NORMAL' | 'BUSY' | 'FULL'
-
-export interface Waiting {
-  people: number
-  minutes: number
-  level: CrowdLevel
-  source: 'ADMIN' | 'SENSOR'
-}
-
-export interface Hospital {
-  id: number
-  name: string
-  typeName: string | null
-  phone: string | null
-  address: string | null
-  lat: number | null
-  lng: number | null
-  specialistTotal: number | null
-  distanceM: number | null
-  waiting: Waiting | null // null 이면 "정보 없음"
-}
+import type { Hospital } from './types'
 
 const REFRESH_MS = 30_000 // 대기 정보는 30초마다 새로 받음
 
-export function useHospitals(dept?: string) {
-  const query = dept ? `?dept=${encodeURIComponent(dept)}` : ''
+export interface HospitalFilter {
+  dept?: string
+  q?: string
+  ids?: number[]
+}
+
+export function useHospitals(filter: HospitalFilter, coords: Coords, enabled = true) {
   return useQuery({
-    queryKey: ['hospitals', dept],
-    queryFn: () => getJson<Hospital[]>(`/api/hospitals${query}`),
+    queryKey: ['hospitals', filter, coords],
+    queryFn: () =>
+      getJson<Hospital[]>('/api/hospitals', {
+        dept: filter.dept,
+        q: filter.q,
+        ids: filter.ids?.join(','),
+        lat: coords.lat,
+        lng: coords.lng,
+      }),
     refetchInterval: REFRESH_MS,
+    enabled,
   })
 }
 
-export function useHospital(id: string) {
+export function useHospital(id: string, coords: Coords) {
   return useQuery({
-    queryKey: ['hospital', id],
-    queryFn: () => getJson<Hospital>(`/api/hospitals/${id}`),
+    queryKey: ['hospital', id, coords],
+    queryFn: () => getJson<Hospital>(`/api/hospitals/${id}`, { lat: coords.lat, lng: coords.lng }),
     refetchInterval: REFRESH_MS,
   })
 }
