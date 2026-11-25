@@ -4,11 +4,13 @@ import Icon from '../components/Icon'
 import RegionSheet from '../components/RegionSheet'
 import { AppBar, FontButton, Screen } from '../components/Screen'
 import TabBar from '../components/TabBar'
-import { useDemoLogin, useRegion } from '../lib/storage'
+import { useLogin, useRegion } from '../lib/storage'
+
+const PROVIDER_NAMES = { kakao: '카카오', naver: '네이버', google: '구글' } as const
 
 /** 13 내 정보 · 15 내 정보(로그인 후) */
 export default function MyPage() {
-  const { loggedIn, logout } = useDemoLogin()
+  const { loggedIn, info, logout } = useLogin()
   const [region] = useRegion()
   const [regionOpen, setRegionOpen] = useState(false)
 
@@ -29,9 +31,9 @@ export default function MyPage() {
                 <Icon name="user" size={32} style={{ color: 'var(--pink)' }} />
               </div>
               <div>
-                <div style={{ fontSize: 21, fontWeight: 900 }}>도와드림 이용자님</div>
+                <div style={{ fontSize: 21, fontWeight: 900 }}>{info?.nickname ?? '도와드림 이용자'}님</div>
                 <div className="pill pill-blush" style={{ marginTop: 4 }}>
-                  시연용 로그인
+                  {info && PROVIDER_NAMES[info.provider]}로 로그인
                 </div>
               </div>
             </div>

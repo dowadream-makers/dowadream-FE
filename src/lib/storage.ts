@@ -5,7 +5,7 @@ export const KEYS = {
   favorites: 'dowadream.favorites',
   largeText: 'dowadream.largeText',
   region: 'dowadream.region',
-  demoLogin: 'dowadream.demoLogin',
+  login: 'dowadream.login',
 } as const
 
 const listeners = new Set<() => void>()
@@ -49,9 +49,24 @@ export function useFavorites() {
   return { ids, has: (id: number) => ids.includes(id), toggle }
 }
 
-export function useDemoLogin() {
-  const [raw, set] = useStored(KEYS.demoLogin)
-  return { loggedIn: raw === '1', login: () => set('1'), logout: () => set(null) }
+export type LoginProvider = 'google' | 'kakao' | 'naver'
+export type LoginInfo = { token: string; nickname: string; provider: LoginProvider }
+
+/** 소셜 로그인 상태. 서버가 준 회원 토큰(30일)과 별명만 브라우저에 둔다 */
+export function useLogin() {
+  const [raw, set] = useStored(KEYS.login)
+  let info: LoginInfo | null = null
+  try {
+    info = raw ? (JSON.parse(raw) as LoginInfo) : null
+  } catch {
+    info = null
+  }
+  return {
+    loggedIn: info !== null,
+    info,
+    login: (next: LoginInfo) => set(JSON.stringify(next)),
+    logout: () => set(null),
+  }
 }
 
 export const DEFAULT_REGION = '서울 노원구'
